@@ -1,0 +1,47 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-weight: 400;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3%;
+}
+
+container {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 2%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+container .fillpdf-container {
+    display: flex;
+    flex-wrap: wrap;   
+}
+
+container .fillpdf-container .form-names{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+container .savepdf-container {
+    display: inline-flex;
+    margin-top: 2%;
+    margin-left: auto;
+}
+
+container .savepdf-container .editpdf {
+    height: auto;
+    margin: 1% 0; 
+    margin-left: auto;
+}
+
+container .savepdf-container .filename-input {
+    height: auto;
+    width: 80%;
+}
