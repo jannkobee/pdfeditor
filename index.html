@@ -12,38 +12,101 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
             integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!-- <script data-main="scripts/main" src="assets/js/require.js"></script> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
         <script src="https://unpkg.com/pdf-lib@1.11.0"></script>
         <script src="https://unpkg.com/downloadjs@1.4.7"></script>
+        <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css"
+            integrity="sha384-X8QTME3FCg1DLb58++lPvsjbQoCT9bp3MsUU3grbIny/3ZwUJkRNO8NPW6zqzuW9" crossorigin="anonymous">
         <!-- <script src="assets\js\require.js"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+            integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
 
     <body>
-<<<<<<< HEAD
         <h1>PDF Editor</h1>
-        <container>
-            <div class="fillpdf-container">
-                <div class="form-names">
-                    <label>Payee's Name</label>
-                    <input id="payeename" class="form-control">
+        <backdrop></backdrop>
+        <modal class="newfile">
+            <div class="header">
+                <label>Create New File</label>
+                <i class="closemodal fa-solid fa-xmark"></i>
+            </div>
+            <div class="body">
+                <div class="dropdown-container">
+                    <label class="label-for-payees-dropdown" for="payee">Select Payee:</label>
+                    <select class="payees-dropdown" id="payee" name="payees">
+                        <option disabled selected>Select Payee</option>
+                    </select>
                 </div>
-                <div class="form-names">
-                    <label>Registered Address</label>
-                    <input id="payeeaddress" class="form-control">
-                </div>
-                <div class="form-names">
-                    <label>Foreign Address</label>
-                    <input id="payeeforeignaddress" class="form-control">
+                <div class="auto-complete-form-container">
+                    <div class="inner-container">
+                        <label>Taxpayer Identification Number</label>
+                        <input class="tin" disabled>
+                    </div>
+                    <div class="inner-container">
+                        <label>Payee's Name</label>
+                        <input class="name" disabled>
+                    </div>
+                    <div class="inner-container">
+                        <label>Payee's Registered Address</label>
+                        <input class="address" disabled>
+                    </div>
+                    <div class="inner-container">
+                        <label>Payee's Foreign Address</label>
+                        <input class="faddress" disabled>
+                    </div>
                 </div>
             </div>
-            <div class="savepdf-container">
+            <div class="footer">
+                <button class="btn btn-light">Create File</button>
+            </div>
+        </modal>
+        <modal class="addpayee">
+            <div class="header">
+                <label>Add New Payee</label>
+                <i class="closemodal fa-solid fa-xmark"></i>
+            </div>
+            <div class="body">
+                <div class="form-container">
+                    <div class="inner-container">
+                        <label>Taxpayer Identification Number</label>
+                        <input class="tin">
+                    </div>
+                    <div class="inner-container">
+                        <label>Payee's Name</label>
+                        <input class="name">
+                    </div>
+                    <div class="inner-container">
+                        <label>Payee's Registered Address</label>
+                        <input class="address">
+                    </div>
+                    <div class="inner-container">
+                        <label>Payee's Foreign Address</label>
+                        <input class="faddress">
+                    </div>
+                    <div class="inner-container">
+                        <label>Payee's Zip Code</label>
+                        <input class="zip">
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <button class="btn btn-light">Add</button>
+            </div>
+        </modal>
+        <container>
+            <!-- <iframe class="display-pdf" src=""></iframe> -->
+            <div class="buttons-container">
+                <button class="newfilebutton btn btn-dark">Create New File</button>
+                <button class="addpayeebutton btn btn-dark">Add New Payee</button>
+            </div>
+            <!-- <div class="savepdf-container">
                 <input class="filename-input form-control" type="text" placeholder="Enter File Name">
                 <button class="editpdf btn btn-sm btn-dark">Save</button>
-            </div>
+            </div> -->
         </container>
-=======
-        Hello
->>>>>>> origin/workspace
     </body>
 
     <script src="assets\js\pdfeditor.js"></script>
