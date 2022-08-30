@@ -7,8 +7,8 @@
         <link rel="stylesheet" href="assets\css\main.css">
         <!-- <link rel="icon" type="image/x-icon" href="images\logo.png"> -->
         <link href="https://fonts.googleapis.com/css2?family=Poppins:ital@0;1&display=swap" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
             integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -20,12 +20,20 @@
             href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css"
             integrity="sha384-X8QTME3FCg1DLb58++lPvsjbQoCT9bp3MsUU3grbIny/3ZwUJkRNO8NPW6zqzuW9" crossorigin="anonymous">
         <!-- <script src="assets\js\require.js"></script> -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
-            integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
 
     <body>
+        <div class="toast-success toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <i class="fa-solid fa-circle-check"></i>
+                <strong class="me-auto">Success</strong>
+                <small class="text-muted"></small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                A New Payee has been added.
+            </div>
+        </div>
         <h1>PDF Editor</h1>
         <backdrop></backdrop>
         <modal class="newfile">
@@ -43,19 +51,19 @@
                 <div class="auto-complete-form-container">
                     <div class="inner-container">
                         <label>Taxpayer Identification Number</label>
-                        <input class="tin" disabled>
+                        <input class="tin" readonly>
                     </div>
                     <div class="inner-container">
                         <label>Payee's Name</label>
-                        <input class="name" disabled>
+                        <input class="name" readonly>
                     </div>
                     <div class="inner-container">
                         <label>Payee's Registered Address</label>
-                        <input class="address" disabled>
+                        <input class="address" readonly>
                     </div>
                     <div class="inner-container">
                         <label>Payee's Foreign Address</label>
-                        <input class="faddress" disabled>
+                        <input class="faddress" readonly>
                     </div>
                 </div>
             </div>
@@ -71,29 +79,29 @@
             <div class="body">
                 <div class="form-container">
                     <div class="inner-container">
-                        <label>Taxpayer Identification Number</label>
-                        <input class="tin">
+                        <label>Taxpayer Identification Number <strong style="color: red">*</strong></label>
+                        <input class="tin" maxlength="17" required>
                     </div>
                     <div class="inner-container">
-                        <label>Payee's Name</label>
-                        <input class="name">
+                        <label>Payee's Name <strong style="color: red">*</strong></label>
+                        <input class="name" required>
                     </div>
                     <div class="inner-container">
-                        <label>Payee's Registered Address</label>
-                        <input class="address">
+                        <label>Payee's Registered Address <strong style="color: red">*</strong></label>
+                        <input class="address" required>
                     </div>
                     <div class="inner-container">
                         <label>Payee's Foreign Address</label>
                         <input class="faddress">
                     </div>
                     <div class="inner-container">
-                        <label>Payee's Zip Code</label>
-                        <input class="zip">
+                        <label>Payee's Zip Code <strong style="color: red">*</strong></label>
+                        <input class="zip" maxlength="4" required>
                     </div>
                 </div>
             </div>
             <div class="footer">
-                <button class="btn btn-light">Add</button>
+                <button class="addnewpayee btn btn-light">Add</button>
             </div>
         </modal>
         <container>
@@ -110,5 +118,6 @@
     </body>
 
     <script src="assets\js\pdfeditor.js"></script>
+    <script type="module" src="assets\js\firestore.js"></script>
 
 </html>
