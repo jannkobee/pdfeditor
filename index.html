@@ -14,12 +14,26 @@
             crossorigin="anonymous" referrerpolicy="no-referrer" />
         <!-- <script data-main="scripts/main" src="assets/js/require.js"></script> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://unpkg.com/pdf-lib@1.11.0"></script>
+        <script src="https://unpkg.com/pdf-lib@1.14.0"></script>
         <script src="https://unpkg.com/downloadjs@1.4.7"></script>
+        <script src="https://unpkg.com/@pdf-lib/fontkit/dist/fontkit.umd.js"></script>
+        <script src="https://unpkg.com/@pdf-lib/fontkit/dist/fontkit.umd.min.js"></script>
         <link rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.1.2/css/fontawesome.min.css"
             integrity="sha384-X8QTME3FCg1DLb58++lPvsjbQoCT9bp3MsUU3grbIny/3ZwUJkRNO8NPW6zqzuW9" crossorigin="anonymous">
+
+        <!-- use the latest version -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"
+            integrity="sha512-UnrKxsCMN9hFk7M56t4I4ckB4N/2HHi0w/7+B/1JsXIX3DmyBcsGpT3/BsuZMZf+6mAr0vP81syWtfynHJ69JA=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+            integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- use the latest version -->
+        <script lang="javascript" src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
         <!-- <script src="assets\js\require.js"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.26.0/polyfill.js"></script>
+        <script src="exceljs.js"></script>
     </head>
 
     <body>
@@ -31,7 +45,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body">
-                A New Payee has been added.
+                A New Payee info has been added.
             </div>
         </div>
         <h1>PDF Editor</h1>
@@ -42,33 +56,142 @@
                 <i class="closemodal fa-solid fa-xmark"></i>
             </div>
             <div class="body">
-                <div class="dropdown-container">
-                    <label class="label-for-payees-dropdown" for="payee">Select Payee:</label>
-                    <select class="payees-dropdown" id="payee" name="payees">
-                        <option disabled selected>Select Payee</option>
-                    </select>
-                </div>
-                <div class="auto-complete-form-container">
-                    <div class="inner-container">
-                        <label>Taxpayer Identification Number</label>
-                        <input class="tin" readonly>
+                <form id="myform">
+                    <button style="display: none;" type="button" class="resetpdf">Reset</button>
+                    <div style="display: flex; justify-content: center; align-items: center; padding: 2% 0;">
+                        <div style="display: flex; flex-direction: column; width: 50%; align-items: center;">
+                            <!-- summary -->
+                            <strong for="cash">Cash</strong>
+                            <input class="summaryornot" id="cash" type="radio" name="summaryornot" value="Cash">
+                        </div>
+                        <div style="display: flex; flex-direction: column; width: 50%; align-items: center;">
+                            <!-- nosummary -->
+                            <strong for="tra">TRA</strong>
+                            <input class="summaryornot" id="tra" type="radio" name="summaryornot" value="TRA">
+                        </div>
                     </div>
-                    <div class="inner-container">
-                        <label>Payee's Name</label>
-                        <input class="name" readonly>
+                    <div class="date-container">
+                        <div class="date-inner-container">
+                            <label>Date From:</label>
+                            <input class="date-from" type="date" disabled>
+                        </div>
+                        <div class="date-inner-container">
+                            <label>Date To:</label>
+                            <input class="date-to" type="date" disabled>
+                        </div>
                     </div>
-                    <div class="inner-container">
-                        <label>Payee's Registered Address</label>
-                        <input class="address" readonly>
+                    <div class="dropdown-container">
+                        <label class="label-for-payees-dropdown" for="payee">Select Payee:</label>
+                        <select class="payees-dropdown" id="payee" name="payees" disabled>
+
+                        </select>
                     </div>
-                    <div class="inner-container">
-                        <label>Payee's Foreign Address</label>
-                        <input class="faddress" readonly>
+                    <div class="auto-complete-form-container">
+                        <div class="inner-container">
+                            <label>Taxpayer Identification Number</label>
+                            <input class="tin" readonly>
+                        </div>
+                        <div class="inner-container">
+                            <label>Payee's Zip Code</label>
+                            <input class="zip" readonly>
+                        </div>
+                        <div class="inner-container">
+                            <label>Payee's Registered Address</label>
+                            <input class="address" readonly>
+                        </div>
+                        <div class="inner-container">
+                            <label>Payee's Foreign Address</label>
+                            <input class="faddress" readonly>
+                        </div>
+                        <div class="inner-container">
+                            <label>Payee's Reg</label>
+                            <input class="vat" readonly>
+                        </div>
                     </div>
-                </div>
+                    <div class="dynamic-form-container">
+                        <strong>Income Payments Subject to Expanded Witholding Tax</strong>
+                        <div class="dynamic-form-inner-container income">
+                            <div class="table">
+                                <label>ATC</label>
+                                <select class="select-atc" id="atc" name="atcs" disabled>
+                                    <option value="0" selected disabled>Select an ATC</option>
+                                    <option value="0.01">WC640</option>
+                                    <option value="0.02">WC157</option>
+                                    <option value="0.05">WC100</option>
+                                </select>
+                            </div>
+                            <div class="table income">
+                                <label>1st Month</label>
+                                <input type="number" value="0" min="0" class="1stmonth" disabled>
+                            </div>
+                            <div class="table income">
+                                <label>2nd Month</label>
+                                <input type="number" value="0" min="0" class="2ndmonth" disabled>
+                            </div>
+                            <div class="table income">
+                                <label>3rd Month</label>
+                                <input type="number" value="0" min="0" class="3rdmonth" disabled>
+                            </div>
+                            <div class="table income">
+                                <label>Total</label>
+                                <input type="number" value="0" min="0" class="total" disabled readonly>
+                            </div>
+                            <div class="table income">
+                                <label>Tax Withheld</label>
+                                <input type="number" value="0" min="0" class="tax" disabled readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dynamic-form-container">
+                        <strong>Money Payments Subject to Witholding of Business Tax (Government &
+                            Private)</strong>
+                        <div class="dynamic-form-inner-container money">
+                            <div class="table">
+                                <label>ATC</label>
+                                <select class="select-atc" id="atc" name="atcs" disabled>
+                                    <option value="0" selected disabled>Select an ATC</option>
+                                    <option id="WV010" rate="5%" value="0.05">WV010</option>
+                                    <option id="WV020" rate="5%" value="0.05">WV020</option>
+                                    <option id="WB080" rate="1%" value="0.01">WB080</option>
+                                </select>
+                            </div>
+                            <div class="table money">
+                                <label>1st Month</label>
+                                <input type="number" value="0" min="0" class="1stmonth" disabled>
+                            </div>
+                            <div class="table money">
+                                <label>2nd Month</label>
+                                <input type="number" value="0" min="0" class="2ndmonth" disabled>
+                            </div>
+                            <div class="table money">
+                                <label>3rd Month</label>
+                                <input type="number" value="0" min="0" class="3rdmonth" disabled>
+                            </div>
+                            <div class="table money">
+                                <label>Total</label>
+                                <input type="number" value="0" min="0" class="total" disabled readonly>
+                            </div>
+                            <div class="table money">
+                                <label>Tax Withheld</label>
+                                <input type="number" value="0" min="0" class="tax" disabled readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dynamic-form-container" style="display: flex; flex-direction: row; margin-bottom: 3%;">
+                        <div class="user-container">
+                            <strong>Payor's Representative Name</strong>
+                            <input class="userName" disabled>
+                        </div>
+                        <div class="user-container">
+                            <strong>Designation / TIN</strong>
+                            <input class="userRole" disabled>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="footer">
-                <button class="btn btn-light">Create File</button>
+                <input class="filename-input" type="text" placeholder="Enter File Name">
+                <button class="newpdffile btn btn-light" disabled>Create File</button>
             </div>
         </modal>
         <modal class="addpayee">
@@ -78,6 +201,15 @@
             </div>
             <div class="body">
                 <div class="form-container">
+                    <div class="inner-container">
+                        <label>ㅤ</label>
+                        <select class="reg-vat"
+                            style="padding: 1%; border-radius: 5px; border: 1px solid black; font-family: Arial, Helvetica, sans-serif;">
+                            <option value="zero">Zero Rated</option>
+                            <option value="vat">VAT Registered</option>
+                            <option value="non">Non-VAT Registered</option>
+                        </select>
+                    </div>
                     <div class="inner-container">
                         <label>Taxpayer Identification Number <strong style="color: red">*</strong></label>
                         <input class="tin" maxlength="17" required>
@@ -96,7 +228,7 @@
                     </div>
                     <div class="inner-container">
                         <label>Payee's Zip Code <strong style="color: red">*</strong></label>
-                        <input class="zip" maxlength="4" required>
+                        <input type="number" class="zip" required />
                     </div>
                 </div>
             </div>
@@ -110,6 +242,11 @@
                 <button class="newfilebutton btn btn-dark">Create New File</button>
                 <button class="addpayeebutton btn btn-dark">Add New Payee</button>
             </div>
+            <div class="generate-excel"
+                style="margin: 3% 0; display: flex; justify-content: center; flex-direction: column;">
+                <input type="month" style="margin: 5% 0">
+                <button class="generateexcelreport btn btn-dark" disabled>Generate Report</button>
+            </div>
             <!-- <div class="savepdf-container">
                 <input class="filename-input form-control" type="text" placeholder="Enter File Name">
                 <button class="editpdf btn btn-sm btn-dark">Save</button>
@@ -117,7 +254,8 @@
         </container>
     </body>
 
-    <script src="assets\js\pdfeditor.js"></script>
+    <script src="assets\js\pdf.js"></script>
+    <!-- <script src="assets\js\excel.js"></script> -->
     <script type="module" src="assets\js\firestore.js"></script>
 
 </html>
