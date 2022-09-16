@@ -8,12 +8,20 @@ body {
     padding: 3%;
 }
 
+input,
+select {
+    background-color: whitesmoke;
+}
+
 .toast {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
     width: auto;
     position: fixed !important;
-    top: 0;
-    right: 0;
+    bottom: 15;
+    left: 15;
     z-index: 99999;
+    opacity: 1;
 }
 
 .toast .toast-header {
@@ -31,14 +39,20 @@ modal {
 
 modal.active {
     z-index: 9999;
-    height: auto;
-    width: auto;
     background-color: gray;
     position: fixed;
     display: flex;
     flex-direction: column;
-    border: 2px solid black;
-    border-radius: 10px;
+}
+
+modal.newfile.active {
+    width: auto;
+    height: 800px;
+}
+
+modal.addpayee.active {
+    width: auto;
+    height: auto;
 }
 
 backdrop {
@@ -83,10 +97,51 @@ modal .body {
     background-color: white;
     height: 80%;
     width: 100%;
+    overflow-y: scroll;
+}
+
+modal .body .date-container {
+    padding: 2%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+modal .body .date-inner-container {
+    padding: 0 2%;
+    width: 45%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+modal .body .date-inner-container label {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+}
+
+modal .body .date-inner-container .date-from {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+modal .body .date-inner-container .date-to {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    text-align: center;
+    width: 100%;
+    height: 100%;
 }
 
 modal .body .dropdown-container {
-    padding: 2%;
+    padding: 0 3.5%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -133,12 +188,12 @@ modal .body .form-container .inner-container input {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 400;
     font-size: 1.1em;
-    height: 40px;
+    /* height: 40px; */
     width: 100%;
     border: 1.5px solid black;
     border-radius: 5px;
+    background-color: whitesmoke;
 }
-
 
 modal .body .auto-complete-form-container {
     padding: 2%;
@@ -150,6 +205,7 @@ modal .body .auto-complete-form-container {
 modal .body .auto-complete-form-container .inner-container {
     display: flex;
     flex-direction: column;
+    align-items: center;
     padding: 2%;
     width: 50%;
 }
@@ -164,10 +220,66 @@ modal .body .auto-complete-form-container .inner-container input {
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 400;
     font-size: 1.1em;
-    height: 40px;
+    /* height: 40px; */
     width: 100%;
     border: 1.5px solid black;
     border-radius: 5px;
+    background-color: whitesmoke;
+}
+
+modal .body .dynamic-form-container {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    font-size: 1.2em;
+    padding: 0 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+modal .body .dynamic-form-container .user-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+}
+
+modal .body .dynamic-form-container .user-container input {
+    width: auto;
+    margin: 1% 0;
+}
+
+modal .body .dynamic-form-container .dynamic-form-inner-container {
+    margin: 2% 0;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    border: 5px solid black;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+modal .body .dynamic-form-container .dynamic-form-inner-container .table {
+    font-size: large;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 33%;
+}
+
+modal .body .dynamic-form-container .dynamic-form-inner-container .table select {
+    width: 80%;
+    text-align: center;
+    background-color: whitesmoke;
+}
+
+modal .body .dynamic-form-container .dynamic-form-inner-container .table input {
+    width: 80%;
+    background-color: whitesmoke;
 }
 
 modal .footer {
@@ -181,7 +293,11 @@ modal .footer {
     padding: 2% 1%;
 }
 
-modal .footer button {
+modal .footer .newpdffile {
+    margin-left: 1%;
+}
+
+modal .footer .addnewpayee {
     margin-left: auto;
 }
 
@@ -215,9 +331,9 @@ container .savepdf-container .editpdf {
     margin-left: auto;
 }
 
-container .savepdf-container .filename-input {
-    height: auto;
-    width: 80%;
+.filename-input {
+    margin-left: auto;
+    background-color: whitesmoke;
 }
 
 .display-pdf {
@@ -230,5 +346,17 @@ container .savepdf-container .filename-input {
         top: auto;
         bottom: 0;
         width: 100% !important;
+    }
+
+    modal .body .auto-complete-form-container .inner-container {
+        width: 100%;
+    }
+
+    modal .body .form-container .inner-container {
+        width: 100%;
+    }
+
+    modal .body .dynamic-form-container .dynamic-form-inner-container .table {
+        width: 100%;
     }
 }
