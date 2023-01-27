@@ -1,7 +1,7 @@
 <html>
 
     <head>
-        <title>PDF Editor</title>
+        <title>Report Generator</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="assets\css\main.css">
@@ -48,7 +48,7 @@
                 A New Payee info has been added.
             </div>
         </div>
-        <h1>PDF Editor</h1>
+        <h1>Report Generator</h1>
         <backdrop></backdrop>
         <modal class="newfile">
             <div class="header">
@@ -115,21 +115,24 @@
                                 <label>ATC</label>
                                 <select class="select-atc" id="atc" name="atcs" disabled>
                                     <option value="0" selected disabled>Select an ATC</option>
-                                    <option value="0.01">WC640</option>
-                                    <option value="0.02">WC157</option>
-                                    <option value="0.05">WC100</option>
+                                    <option id="WC640" rate="1%" value="0.01">WC640</option>
+                                    <option id="WC157" rate="2%" value="0.02">WC157</option>
+                                    <option id="WC100" rate="5%" value="0.05">WC100</option>
                                 </select>
                             </div>
                             <div class="table income">
                                 <label>1st Month</label>
+                                <label class="ifvatregincome1st" style="font-weight: lighter;"></label>
                                 <input type="number" value="0" min="0" class="1stmonth" disabled>
                             </div>
                             <div class="table income">
                                 <label>2nd Month</label>
+                                <label class="ifvatregincome2nd" style="font-weight: lighter;"></label>
                                 <input type="number" value="0" min="0" class="2ndmonth" disabled>
                             </div>
                             <div class="table income">
                                 <label>3rd Month</label>
+                                <label class="ifvatregincome3rd" style="font-weight: lighter;"></label>
                                 <input type="number" value="0" min="0" class="3rdmonth" disabled>
                             </div>
                             <div class="table income">
@@ -157,14 +160,17 @@
                             </div>
                             <div class="table money">
                                 <label>1st Month</label>
+                                <label class="ifvatregmoney1st" style="font-weight: lighter;"></label>
                                 <input type="number" value="0" min="0" class="1stmonth" disabled>
                             </div>
                             <div class="table money">
                                 <label>2nd Month</label>
+                                <label class="ifvatregmoney2nd" style="font-weight: lighter;"></label>
                                 <input type="number" value="0" min="0" class="2ndmonth" disabled>
                             </div>
                             <div class="table money">
                                 <label>3rd Month</label>
+                                <label class="ifvatregmoney3rd" style="font-weight: lighter;"></label>
                                 <input type="number" value="0" min="0" class="3rdmonth" disabled>
                             </div>
                             <div class="table money">
@@ -177,21 +183,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="dynamic-form-container" style="display: flex; flex-direction: row; margin-bottom: 3%;">
+                    <div class="dynamic-form-container">
                         <div class="user-container">
                             <strong>Payor's Representative Name</strong>
-                            <input class="userName" disabled>
+                            <select class="userName" disabled style="text-align: center;">
+                                <option selected disabled>Select Representative</option>
+                                <option>Ronald C. Ignacio</option>
+                                <option>Ma. Corazon B. Almario</option>
+                                <option>Shery Anne D. Paderon, CPA</option>
+                            </select>
                         </div>
-                        <div class="user-container">
+                        <!-- <div class="user-container">
                             <strong>Designation / TIN</strong>
                             <input class="userRole" disabled>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
             </div>
             <div class="footer">
                 <input class="filename-input" type="text" placeholder="Enter File Name">
-                <button class="newpdffile btn btn-light" disabled>Create File</button>
+                <button class="newpdffile btn btn-light">Create File</button>
             </div>
         </modal>
         <modal class="addpayee">
@@ -244,7 +255,14 @@
             </div>
             <div class="generate-excel"
                 style="margin: 3% 0; display: flex; justify-content: center; flex-direction: column;">
-                <input type="month" style="margin: 5% 0">
+                <input class="form-control" type="month" style="margin: 5% 0">
+                <select class="form-select" name="prepared_by" style="margin: 5% 0">
+                    <option disabled selected>Select Employee</option>
+                    <option>Ronald C. Ignacio</option>
+                    <!-- <option>Saab</option>
+                    <option>Opel</option>
+                    <option>Audi</option> -->
+                </select>
                 <button class="generateexcelreport btn btn-dark" disabled>Generate Report</button>
             </div>
             <!-- <div class="savepdf-container">

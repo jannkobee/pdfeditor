@@ -173,9 +173,15 @@ async function savepdf(pdfname) {
   const userName = $(
     "modal .body .dynamic-form-container .user-container .userName"
   ).val();
-  const userRole = $(
-    "modal .body .dynamic-form-container .user-container .userRole"
-  ).val();
+  let userRole = null;
+
+  if (userName == "Ronald C. Ignacio") {
+    userRole = "Admin. Officer V";
+  } else if (userName == "Shery Anne D. Paderon, CPA") {
+    userRole = "PPO IV - Accounting Head";
+  } else if (userName == "Ma. Corazon B. Almario") {
+    userRole = "Director IV Finance";
+  }
 
   const datefromMonthfield = form.getTextField("fromMonth");
   const datefromDayfield = form.getTextField("fromDay");
@@ -268,12 +274,12 @@ async function savepdf(pdfname) {
   $(".resetpdf").click();
 }
 
-$(".generate-excel input").change(function () {
+$(".generate-excel select").change(function () {
   $(".generateexcelreport").removeAttr("disabled");
 });
 
 $(".newpdffile").click(function () {
-  const name = $(".filename-input").val();
+  let name = $(".filename-input").val();
   savepdf(name);
 });
 

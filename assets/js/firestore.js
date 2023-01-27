@@ -32,6 +32,8 @@ const db = getFirestore();
 
 const colRef = collection(db, "pdfeditor");
 const colRef1 = collection(db, "pdfsummary");
+const colRef2 = collection(db, "pdfsummary1");
+const colRef3 = collection(db, "pdfsummary2");
 
 $(document).ready(function () {
   getData();
@@ -174,6 +176,66 @@ $(".dynamic-form-inner-container.income .table.income input").focusout(
   }
 );
 
+$(".dynamic-form-inner-container.income .table.income .1stmonth").on(
+  "focusin",
+  function () {
+    $(".dynamic-form-inner-container.income .table.income .1stmonth").val("");
+    $(
+      ".dynamic-form-inner-container.income .table.income .ifvatregincome1st"
+    ).html("");
+  }
+);
+
+$(".dynamic-form-inner-container.income .table.income .2ndmonth").on(
+  "focusin",
+  function () {
+    $(".dynamic-form-inner-container.income .table.income .2ndmonth").val("");
+    $(
+      ".dynamic-form-inner-container.income .table.income .ifvatregincome2nd"
+    ).html("");
+  }
+);
+
+$(".dynamic-form-inner-container.income .table.income .3rdmonth").on(
+  "focusin",
+  function () {
+    $(".dynamic-form-inner-container.income .table.income .3rdmonth").val("");
+    $(
+      ".dynamic-form-inner-container.income .table.income .ifvatregincome3rd"
+    ).html("");
+  }
+);
+
+$(".dynamic-form-inner-container.money .table.money .1stmonth").on(
+  "focusin",
+  function () {
+    $(".dynamic-form-inner-container.money .table.money .1stmonth").val("");
+    $(
+      ".dynamic-form-inner-container.money .table.money .ifvatregmoney1st"
+    ).html("");
+  }
+);
+
+$(".dynamic-form-inner-container.money .table.money .2ndmonth").on(
+  "focusin",
+  function () {
+    $(".dynamic-form-inner-container.money .table.money .2ndmonth").val("");
+    $(
+      ".dynamic-form-inner-container.money .table.money .ifvatregmoney2nd"
+    ).html("");
+  }
+);
+
+$(".dynamic-form-inner-container.money .table.money .3rdmonth").on(
+  "focusin",
+  function () {
+    $(".dynamic-form-inner-container.money .table.money .3rdmonth").val("");
+    $(
+      ".dynamic-form-inner-container.money .table.money .ifvatregmoney3rd"
+    ).html("");
+  }
+);
+
 $(".dynamic-form-inner-container.income .table.income input").on(
   "focusout",
   function () {
@@ -197,19 +259,21 @@ $(".dynamic-form-inner-container.income .table.income input").on(
       if (vatreg == "vat") {
         if (first > 0) {
           first = parseFloat(first) / parseFloat(1.12);
-          $(".dynamic-form-inner-container.income .table.income .1stmonth").val(
-            first.toFixed(2)
-          );
-        } else if (second > 0) {
+          $(
+            ".dynamic-form-inner-container.income .table.income .ifvatregincome1st"
+          ).html(first.toFixed(2));
+        }
+        if (second > 0) {
           second = parseFloat(second) / parseFloat(1.12);
-          $(".dynamic-form-inner-container.income .table.income .2ndmonth").val(
-            second.toFixed(2)
-          );
-        } else if (third > 0) {
+          $(
+            ".dynamic-form-inner-container.income .table.income .ifvatregincome2nd"
+          ).html(second.toFixed(2));
+        }
+        if (third > 0) {
           third = parseFloat(third) / parseFloat(1.12);
-          $(".dynamic-form-inner-container.income .table.income .3rdmonth").val(
-            third.toFixed(2)
-          );
+          $(
+            ".dynamic-form-inner-container.income .table.income .ifvatregincome3rd"
+          ).html(third.toFixed(2));
         }
       }
       $(".dynamic-form-inner-container.income .table.income .total").val(
@@ -256,7 +320,7 @@ $(".dynamic-form-inner-container.money .table .select-atc").change(function () {
   );
 });
 
-$("modal .body .dynamic-form-container .user-container .userRole").change(
+$("modal .body .dynamic-form-container .user-container .userName").change(
   function () {
     $(".newpdffile").removeAttr("disabled");
   }
@@ -273,19 +337,42 @@ $(".dynamic-form-inner-container.money .table.money input").focusout(
 $(".dynamic-form-inner-container.money .table.money input").on(
   "focusout",
   function () {
+    const vatreg = $(
+      "modal .body .auto-complete-form-container .inner-container .vat"
+    ).val();
     const atc = $(
       ".dynamic-form-inner-container.money .table .select-atc"
     ).val();
     if (atc > 0) {
-      const first = $(
+      var first = $(
         ".dynamic-form-inner-container.money .table.money .1stmonth"
       ).val();
-      const second = $(
+      var second = $(
         ".dynamic-form-inner-container.money .table.money .2ndmonth"
       ).val();
-      const third = $(
+      var third = $(
         ".dynamic-form-inner-container.money .table.money .3rdmonth"
       ).val();
+      if (vatreg == "vat") {
+        if (first > 0) {
+          first = parseFloat(first) / parseFloat(1.12);
+          $(
+            ".dynamic-form-inner-container.money .table.money .ifvatregmoney1st"
+          ).html(first.toFixed(2));
+        }
+        if (second > 0) {
+          second = parseFloat(second) / parseFloat(1.12);
+          $(
+            ".dynamic-form-inner-container.money .table.money .ifvatregmoney2nd"
+          ).html(second.toFixed(2));
+        }
+        if (third > 0) {
+          third = parseFloat(third) / parseFloat(1.12);
+          $(
+            ".dynamic-form-inner-container.money .table.money .ifvatregmoney3rd"
+          ).html(third.toFixed(2));
+        }
+      }
       $(".dynamic-form-inner-container.money .table.money .total").val(
         add(first, second, third)
       );
@@ -345,20 +432,36 @@ $(".newpdffile").click(function () {
   const date = $(".date-container .date-inner-container .date-from").val();
   const name = $(".dropdown-container .payees-dropdown").val();
   const tin = $(".auto-complete-form-container .inner-container .tin").val();
-  const atc = $(
+  const atcIncome = $(
+    ".dynamic-form-container .dynamic-form-inner-container.income .table .select-atc option:selected"
+  ).text();
+  let rateIncome = "";
+  const baseIncome = $(
+    ".dynamic-form-container .dynamic-form-inner-container.income .table.income .total"
+  ).val();
+  const withheldIncome = $(
+    ".dynamic-form-container .dynamic-form-inner-container.income .table.income .tax"
+  ).val();
+  $(
+    ".dynamic-form-container .dynamic-form-inner-container.income .table .select-atc option:selected"
+  ).each(function () {
+    rateIncome = $(this).attr("rate");
+  });
+
+  const atcMoney = $(
     ".dynamic-form-container .dynamic-form-inner-container.money .table .select-atc option:selected"
   ).text();
-  let rate = "";
-  const base = $(
+  let rateMoney = "";
+  const baseMoney = $(
     ".dynamic-form-container .dynamic-form-inner-container.money .table.money .total"
   ).val();
-  const withheld = $(
+  const withheldMoney = $(
     ".dynamic-form-container .dynamic-form-inner-container.money .table.money .tax"
   ).val();
   $(
     ".dynamic-form-container .dynamic-form-inner-container.money .table .select-atc option:selected"
   ).each(function () {
-    rate = $(this).attr("rate");
+    rateMoney = $(this).attr("rate");
   });
   const months = [
     "January",
@@ -380,16 +483,43 @@ $(".newpdffile").click(function () {
   console.log(summaryornot);
   if (summaryornot == "Cash") {
     try {
-      addDoc(colRef1, {
-        month: month,
-        year: year,
-        name: name,
-        tin: tin,
-        atc: atc,
-        rate: rate,
-        base: base,
-        withheld: withheld,
-      });
+      if (atcIncome != "Select an ATC") {
+        addDoc(colRef1, {
+          month: month,
+          year: year,
+          name: name,
+          tin: tin,
+          atc: atcIncome,
+          rate: rateIncome,
+          base: baseIncome,
+          withheld: withheldIncome,
+        });
+      }
+      if (atcMoney != "Select an ATC") {
+        if (atcMoney == "WB080") {
+          addDoc(colRef3, {
+            month: month,
+            year: year,
+            name: name,
+            tin: tin,
+            atc: atcMoney,
+            rate: rateMoney,
+            base: baseMoney,
+            withheld: withheldMoney,
+          });
+        } else {
+          addDoc(colRef2, {
+            month: month,
+            year: year,
+            name: name,
+            tin: tin,
+            atc: atcMoney,
+            rate: rateMoney,
+            base: baseMoney,
+            withheld: withheldMoney,
+          });
+        }
+      }
     } catch (error) {
       alert(error);
     }
@@ -397,69 +527,109 @@ $(".newpdffile").click(function () {
 });
 
 async function getWhereDocs(month, year) {
+  const data = [];
   const q = query(collection(db, "pdfsummary"), where("month", "==", month));
+  const q1 = query(collection(db, "pdfsummary1"), where("month", "==", month));
+  const q2 = query(collection(db, "pdfsummary2"), where("month", "==", month));
   await getDocs(q)
     .then((snapshot) => {
-      let data = [];
-      let data1 = [];
+      let incomeData = [];
       snapshot.docs.forEach((doc) => {
-        data.push({ ...doc.data(), id: doc.id });
+        incomeData.push({ ...doc.data(), id: doc.id });
       });
-      for (let i = 0; i < data.length; i++) {
-        if (data[i]["year"] == year) {
-          data1.push(data[i]);
-        }
-      }
-      console.log(data1);
-      if (data1.length > 0) {
-        exportJS(data1);
+      console.log(incomeData);
+      if (incomeData.length > 0) {
+        // exportJS(incomeData);
+        data.push(incomeData);
       } else {
-        alert("No data");
+        data.push([]);
       }
     })
     .catch((err) => {
       console.log(err.message);
     });
+  await getDocs(q1)
+    .then((snapshot) => {
+      let moneyData = [];
+      snapshot.docs.forEach((doc) => {
+        moneyData.push({ ...doc.data(), id: doc.id });
+      });
+      console.log(moneyData);
+      if (moneyData.length > 0) {
+        data.push(moneyData);
+        // exportJS(income);
+      } else {
+        data.push([]);
+      }
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  await getDocs(q2)
+    .then((snapshot) => {
+      let money2Data = [];
+      snapshot.docs.forEach((doc) => {
+        money2Data.push({ ...doc.data(), id: doc.id });
+      });
+      console.log(money2Data);
+      if (money2Data.length > 0) {
+        data.push(money2Data);
+        // exportJS(income);
+      } else {
+        data.push([]);
+      }
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
+  console.log(data);
+  exportJS(data);
+  // js(data);
+}
+
+function js(data) {
+  console.log(data[0][0]);
+  // if(data[0][0])
 }
 
 async function exportJS(data) {
-  let number = data.length;
-  let totalbase = 0;
-  let totalwithheld = 0;
-
   const workbook = new ExcelJS.Workbook();
 
-  const worksheet = workbook.addWorksheet("My Sheet");
+  const worksheet = workbook.addWorksheet("Sheet 1");
+
+  let cellNumber = 8;
+  let totalBase = 0;
+  let totalWithheld = 0;
 
   //   worksheet.pageSetup.printArea = "A1:F20";
 
-  worksheet.getColumn("A").width = 22;
-  worksheet.getColumn("B").width = 18;
-  worksheet.getColumn("C").width = 10;
+  worksheet.getColumn("A").width = 5;
+  worksheet.getColumn("B").width = 15;
+  worksheet.getColumn("C").width = 18;
   worksheet.getColumn("D").width = 10;
-  worksheet.getColumn("E").width = 15;
+  worksheet.getColumn("E").width = 10;
   worksheet.getColumn("F").width = 15;
+  worksheet.getColumn("G").width = 15;
 
-  worksheet.getRow("6").height = 36;
-  worksheet.getRow("6").alignment = {
+  worksheet.getCell("G2").value = "0619E";
+  worksheet.getRow("2").font = { bold: true, size: 11 };
+  worksheet.getCell("G2").alignment = {
     vertical: "middle",
     horizontal: "center",
   };
-  worksheet.getRow("6").font = { bold: true, size: 12 };
 
-  worksheet.mergeCells("A1:F1");
-  worksheet.mergeCells("A2:F2");
-  worksheet.mergeCells("A3:F3");
-  worksheet.mergeCells("A4:F4");
-
-  worksheet.getCell("A1").alignment = {
+  worksheet.getRow("7").height = 36;
+  worksheet.getRow("7").alignment = {
     vertical: "middle",
     horizontal: "center",
   };
-  worksheet.getCell("A2").alignment = {
-    vertical: "middle",
-    horizontal: "center",
-  };
+  worksheet.getRow("7").font = { bold: true, size: 12 };
+
+  worksheet.mergeCells("A3:G3");
+  worksheet.mergeCells("A4:G4");
+  worksheet.mergeCells("A5:G5");
+  worksheet.mergeCells("A6:G6");
+
   worksheet.getCell("A3").alignment = {
     vertical: "middle",
     horizontal: "center",
@@ -468,128 +638,117 @@ async function exportJS(data) {
     vertical: "middle",
     horizontal: "center",
   };
-
-  worksheet.mergeCells(`A${number + 7}:D${number + 7}`);
-  worksheet.getRow(`${number + 7}`).height = 35;
-  worksheet.getCell(`A${number + 7}`).border = {
-    top: { style: "thin" },
-    left: { style: "thin" },
-    bottom: { style: "thin" },
-    right: { style: "thin" },
-  };
-  worksheet.getCell(`E${number + 7}`).border = {
-    top: { style: "thin" },
-    left: { style: "thin" },
-    bottom: { style: "thin" },
-    right: { style: "thin" },
-  };
-  worksheet.getCell(`F${number + 7}`).border = {
-    top: { style: "thin" },
-    left: { style: "thin" },
-    bottom: { style: "thin" },
-    right: { style: "thin" },
-  };
-  worksheet.getCell(`E${number + 7}`).alignment = {
-    horizontal: "right",
+  worksheet.getCell("A5").alignment = {
     vertical: "middle",
+    horizontal: "center",
   };
-  worksheet.getCell(`F${number + 7}`).alignment = {
+  worksheet.getCell("A6").alignment = {
     vertical: "middle",
-    horizontal: "right",
+    horizontal: "center",
   };
 
-  worksheet.getCell("A4").font = { bold: true };
+  worksheet.getCell("A6").font = { bold: true };
 
-  worksheet.getCell("A1").value =
+  worksheet.getCell("A3").value =
     "Office of the Presidential Adviser on Peace, Reconciliation, and Unity";
-  worksheet.getCell("A2").value =
+  worksheet.getCell("A4").value =
     "Agustin I Bldg F. Ortigas Jr. Rd. Ortigas Center Pasig City";
-  worksheet.getCell("A3").value = "003-826-398-000";
+  worksheet.getCell("A5").value = "003-826-398-000";
   worksheet.getCell(
-    "A4"
-  ).value = `For this Month of ${data[0]["month"]} ${data[0]["year"]}`;
+    "A6"
+  ).value = `For this Month of ${data[0][0]["month"]} ${data[0][0]["year"]}`;
 
-  worksheet.getCell("A3").value = "003-826-398-000";
-
-  worksheet.getCell("A6").value = "Payee Name";
-  worksheet.getCell("B6").value = "TIN Number";
-  worksheet.getCell("C6").value = "ATC";
-  worksheet.getCell("D6").value = "Tax Rate";
-  worksheet.getCell("E6").value = "Tax Base";
-  worksheet.getCell("F6").value = "Tax Withheld";
+  worksheet.getCell("A7").value = "No";
+  worksheet.getCell("B7").value = "Payee Name";
+  worksheet.getCell("C7").value = "TIN Number";
+  worksheet.getCell("D7").value = "ATC";
+  worksheet.getCell("E7").value = "Tax Rate";
+  worksheet.getCell("F7").value = "Tax Base";
+  worksheet.getCell("G7").value = "Tax Withheld";
 
   //   worksheet.getCell("A6:F6")
+  worksheet.getCell("A7").border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell("B7").border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell("C7").border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell("D7").border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell("E7").border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell("F7").border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell("G7").border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
 
-  worksheet.getCell("A6").border = {
-    top: { style: "thin" },
-    left: { style: "thin" },
-    bottom: { style: "thin" },
-    right: { style: "thin" },
-  };
-  worksheet.getCell("B6").border = {
-    top: { style: "thin" },
-    left: { style: "thin" },
-    bottom: { style: "thin" },
-    right: { style: "thin" },
-  };
-  worksheet.getCell("C6").border = {
-    top: { style: "thin" },
-    left: { style: "thin" },
-    bottom: { style: "thin" },
-    right: { style: "thin" },
-  };
-  worksheet.getCell("D6").border = {
-    top: { style: "thin" },
-    left: { style: "thin" },
-    bottom: { style: "thin" },
-    right: { style: "thin" },
-  };
-  worksheet.getCell("E6").border = {
-    top: { style: "thin" },
-    left: { style: "thin" },
-    bottom: { style: "thin" },
-    right: { style: "thin" },
-  };
-  worksheet.getCell("F6").border = {
-    top: { style: "thin" },
-    left: { style: "thin" },
-    bottom: { style: "thin" },
-    right: { style: "thin" },
-  };
+  for (let a = 0; a < data[0].length; a++) {
+    let b = 8 + a;
+    cellNumber = b + 1;
+    totalBase = parseFloat(totalBase) + parseFloat(data[0][a]["base"]);
+    totalWithheld =
+      parseFloat(totalWithheld) + parseFloat(data[0][a]["withheld"]);
 
-  for (let a = 0; a < data.length; a++) {
-    let b = 7 + a;
-    totalbase = parseFloat(totalbase) + parseFloat(data[a]["base"]);
-    totalwithheld = parseFloat(totalwithheld) + parseFloat(data[a]["withheld"]);
-
-    worksheet.getCell(`A${b}`).value = data[a]["name"];
-    worksheet.getCell(`B${b}`).value = data[a]["tin"];
-    worksheet.getCell(`C${b}`).value = data[a]["atc"];
-    worksheet.getCell(`D${b}`).value = data[a]["rate"];
-    worksheet.getCell(`E${b}`).value = parseFloat(data[a]["base"]);
-    worksheet.getCell(`F${b}`).value = parseFloat(data[a]["withheld"]);
+    worksheet.getCell(`A${b}`).value = parseFloat(a) + parseFloat(1);
+    worksheet.getCell(`B${b}`).value = data[0][a]["name"];
+    worksheet.getCell(`C${b}`).value = data[0][a]["tin"];
+    worksheet.getCell(`D${b}`).value = data[0][a]["atc"];
+    worksheet.getCell(`E${b}`).value = data[0][a]["rate"];
+    worksheet.getCell(`F${b}`).value = parseFloat(data[0][a]["base"]);
+    worksheet.getCell(`G${b}`).value = parseFloat(data[0][a]["withheld"]);
 
     worksheet.getCell(`A${b}`).alignment = {
-      horizontal: "left",
+      horizontal: "center",
     };
     worksheet.getCell(`B${b}`).alignment = {
       horizontal: "left",
     };
     worksheet.getCell(`C${b}`).alignment = {
-      horizontal: "center",
+      horizontal: "left",
     };
     worksheet.getCell(`D${b}`).alignment = {
       horizontal: "center",
     };
     worksheet.getCell(`E${b}`).alignment = {
-      horizontal: "right",
+      horizontal: "center",
     };
     worksheet.getCell(`F${b}`).alignment = {
       horizontal: "right",
     };
+    worksheet.getCell(`G${b}`).alignment = {
+      horizontal: "right",
+    };
 
-    worksheet.getCell(`E${b}`).numFmt = "#,##0.00;[Red]-#,##0.00";
     worksheet.getCell(`F${b}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+    worksheet.getCell(`G${b}`).numFmt = "#,##0.00;[Red]-#,##0.00";
 
     worksheet.getCell(`A${b}`).border = {
       top: { style: "thin" },
@@ -627,23 +786,566 @@ async function exportJS(data) {
       bottom: { style: "thin" },
       right: { style: "thin" },
     };
+    worksheet.getCell(`G${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
   }
 
-  worksheet.getCell(`E${number + 7}`).value = totalbase;
-  worksheet.getCell(`F${number + 7}`).value = totalwithheld;
-  worksheet.getCell(`E${number + 7}`).numFmt = "#,##0.00;[Red]-#,##0.00";
-  worksheet.getCell(`F${number + 7}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+  worksheet.mergeCells(`A${cellNumber}:E${cellNumber}`);
+  // worksheet.getRow(`${cellNumber}`).height = 35;
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+  worksheet.getCell(`A${cellNumber}`).value = "Total";
+  worksheet.getCell(`A${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`F${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`G${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`F${cellNumber}`).alignment = {
+    horizontal: "right",
+    vertical: "middle",
+  };
+  worksheet.getCell(`G${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "right",
+  };
 
-  worksheet.getCell(`A${number + 10}`).value = "Prepared by";
+  worksheet.getCell(`F${cellNumber}`).value = totalBase;
+  worksheet.getCell(`G${cellNumber}`).value = totalWithheld;
+  worksheet.getCell(`F${cellNumber}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+  worksheet.getCell(`G${cellNumber}`).numFmt = "#,##0.00;[Red]-#,##0.00";
 
-  totalbase = 0;
-  totalwithheld = 0;
+  // worksheet.getCell(`A${incomeNumber + 10}`).value = "Prepared by";
+  // worksheet.getCell(`G${incomeNumber + 10}`).value = $(
+  //   ".generate-excel select"
+  // ).val();
+
+  totalBase = 0;
+  totalWithheld = 0;
+
+  cellNumber = cellNumber + 2;
+  worksheet.getCell(`G${cellNumber}`).value = "1600VT";
+  worksheet.getRow(`${cellNumber}`).font = { bold: true, size: 11 };
+  worksheet.getCell(`G${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:G${cellNumber}`);
+
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+
+  worksheet.getCell(`A${cellNumber}`).value =
+    "Office of the Presidential Adviser on Peace, Reconciliation, and Unity";
+
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:G${cellNumber}`);
+
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+
+  worksheet.getCell(`A${cellNumber}`).value =
+    "Agustin I Bldg F. Ortigas Jr. Rd. Ortigas Center Pasig City";
+
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:G${cellNumber}`);
+
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+
+  worksheet.getCell(`A${cellNumber}`).value = "003-826-398-000";
+
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:G${cellNumber}`);
+
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+
+  worksheet.getCell(`A${cellNumber}`).font = { bold: true };
+
+  worksheet.getCell(
+    `A${cellNumber}`
+  ).value = `For this Month of ${data[0][0]["month"]} ${data[0][0]["year"]}`;
+
+  cellNumber = cellNumber + 1;
+
+  worksheet.getRow(`${cellNumber}`).height = 36;
+  worksheet.getRow(`${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+  worksheet.getRow(`${cellNumber}`).font = { bold: true, size: 12 };
+
+  worksheet.getCell(`A${cellNumber}`).value = "No";
+  worksheet.getCell(`B${cellNumber}`).value = "Payee Name";
+  worksheet.getCell(`C${cellNumber}`).value = "TIN Number";
+  worksheet.getCell(`D${cellNumber}`).value = "ATC";
+  worksheet.getCell(`E${cellNumber}`).value = "Tax Rate";
+  worksheet.getCell(`F${cellNumber}`).value = "Tax Base";
+  worksheet.getCell(`G${cellNumber}`).value = "Tax Withheld";
+
+  //   worksheet.getCell("A6:F6")
+  worksheet.getCell(`A${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`B${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`C${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`D${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`E${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`F${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`G${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+
+  for (let a = 0; a < data[1].length; a++) {
+    cellNumber = cellNumber + 1;
+    let b = cellNumber;
+    totalBase = parseFloat(totalBase) + parseFloat(data[1][a]["base"]);
+    totalWithheld =
+      parseFloat(totalWithheld) + parseFloat(data[1][a]["withheld"]);
+
+    worksheet.getCell(`A${b}`).value = parseFloat(a) + parseFloat(1);
+    worksheet.getCell(`B${b}`).value = data[1][a]["name"];
+    worksheet.getCell(`C${b}`).value = data[1][a]["tin"];
+    worksheet.getCell(`D${b}`).value = data[1][a]["atc"];
+    worksheet.getCell(`E${b}`).value = data[1][a]["rate"];
+    worksheet.getCell(`F${b}`).value = parseFloat(data[1][a]["base"]);
+    worksheet.getCell(`G${b}`).value = parseFloat(data[1][a]["withheld"]);
+
+    worksheet.getCell(`A${b}`).alignment = {
+      horizontal: "center",
+    };
+    worksheet.getCell(`B${b}`).alignment = {
+      horizontal: "left",
+    };
+    worksheet.getCell(`C${b}`).alignment = {
+      horizontal: "left",
+    };
+    worksheet.getCell(`D${b}`).alignment = {
+      horizontal: "center",
+    };
+    worksheet.getCell(`E${b}`).alignment = {
+      horizontal: "center",
+    };
+    worksheet.getCell(`F${b}`).alignment = {
+      horizontal: "right",
+    };
+    worksheet.getCell(`G${b}`).alignment = {
+      horizontal: "right",
+    };
+
+    worksheet.getCell(`F${b}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+    worksheet.getCell(`G${b}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+
+    worksheet.getCell(`A${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`B${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`C${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`D${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`E${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`F${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`G${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+  }
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:E${cellNumber}`);
+  // worksheet.getRow(`${cellNumber}`).height = 35;
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+  worksheet.getCell(`A${cellNumber}`).value = "Total";
+  worksheet.getCell(`A${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`F${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`G${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`F${cellNumber}`).alignment = {
+    horizontal: "right",
+    vertical: "middle",
+  };
+  worksheet.getCell(`G${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "right",
+  };
+
+  worksheet.getCell(`F${cellNumber}`).value = totalBase;
+  worksheet.getCell(`G${cellNumber}`).value = totalWithheld;
+  worksheet.getCell(`F${cellNumber}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+  worksheet.getCell(`G${cellNumber}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+
+  // worksheet.getCell(`A${incomeNumber + 10}`).value = "Prepared by";
+  // worksheet.getCell(`G${incomeNumber + 10}`).value = $(
+  //   ".generate-excel select"
+  // ).val();
+
+  totalBase = 0;
+  totalWithheld = 0;
+
+  cellNumber = cellNumber + 2;
+  worksheet.getCell(`G${cellNumber}`).value = "1600PT";
+  worksheet.getRow(`${cellNumber}`).font = { bold: true, size: 11 };
+  worksheet.getCell(`G${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:G${cellNumber}`);
+
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+
+  worksheet.getCell(`A${cellNumber}`).value =
+    "Office of the Presidential Adviser on Peace, Reconciliation, and Unity";
+
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:G${cellNumber}`);
+
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+
+  worksheet.getCell(`A${cellNumber}`).value =
+    "Agustin I Bldg F. Ortigas Jr. Rd. Ortigas Center Pasig City";
+
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:G${cellNumber}`);
+
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+
+  worksheet.getCell(`A${cellNumber}`).value = "003-826-398-000";
+
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:G${cellNumber}`);
+
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+
+  worksheet.getCell(`A${cellNumber}`).font = { bold: true };
+
+  worksheet.getCell(
+    `A${cellNumber}`
+  ).value = `For this Month of ${data[0][0]["month"]} ${data[0][0]["year"]}`;
+
+  cellNumber = cellNumber + 1;
+
+  worksheet.getRow(`${cellNumber}`).height = 36;
+  worksheet.getRow(`${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+  worksheet.getRow(`${cellNumber}`).font = { bold: true, size: 12 };
+
+  worksheet.getCell(`A${cellNumber}`).value = "No";
+  worksheet.getCell(`B${cellNumber}`).value = "Payee Name";
+  worksheet.getCell(`C${cellNumber}`).value = "TIN Number";
+  worksheet.getCell(`D${cellNumber}`).value = "ATC";
+  worksheet.getCell(`E${cellNumber}`).value = "Tax Rate";
+  worksheet.getCell(`F${cellNumber}`).value = "Tax Base";
+  worksheet.getCell(`G${cellNumber}`).value = "Tax Withheld";
+
+  //   worksheet.getCell("A6:F6")
+  worksheet.getCell(`A${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`B${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`C${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`D${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`E${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`F${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`G${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+
+  for (let a = 0; a < data[2].length; a++) {
+    cellNumber = cellNumber + 1;
+    let b = cellNumber;
+    totalBase = parseFloat(totalBase) + parseFloat(data[2][a]["base"]);
+    totalWithheld =
+      parseFloat(totalWithheld) + parseFloat(data[2][a]["withheld"]);
+
+    worksheet.getCell(`A${b}`).value = parseFloat(a) + parseFloat(1);
+    worksheet.getCell(`B${b}`).value = data[2][a]["name"];
+    worksheet.getCell(`C${b}`).value = data[2][a]["tin"];
+    worksheet.getCell(`D${b}`).value = data[2][a]["atc"];
+    worksheet.getCell(`E${b}`).value = data[2][a]["rate"];
+    worksheet.getCell(`F${b}`).value = parseFloat(data[2][a]["base"]);
+    worksheet.getCell(`G${b}`).value = parseFloat(data[2][a]["withheld"]);
+
+    worksheet.getCell(`A${b}`).alignment = {
+      horizontal: "center",
+    };
+    worksheet.getCell(`B${b}`).alignment = {
+      horizontal: "left",
+    };
+    worksheet.getCell(`C${b}`).alignment = {
+      horizontal: "left",
+    };
+    worksheet.getCell(`D${b}`).alignment = {
+      horizontal: "center",
+    };
+    worksheet.getCell(`E${b}`).alignment = {
+      horizontal: "center",
+    };
+    worksheet.getCell(`F${b}`).alignment = {
+      horizontal: "right",
+    };
+    worksheet.getCell(`G${b}`).alignment = {
+      horizontal: "right",
+    };
+
+    worksheet.getCell(`F${b}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+    worksheet.getCell(`G${b}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+
+    worksheet.getCell(`A${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`B${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`C${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`D${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`E${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`F${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+    worksheet.getCell(`G${b}`).border = {
+      top: { style: "thin" },
+      left: { style: "thin" },
+      bottom: { style: "thin" },
+      right: { style: "thin" },
+    };
+  }
+  cellNumber = cellNumber + 1;
+
+  worksheet.mergeCells(`A${cellNumber}:E${cellNumber}`);
+  // worksheet.getRow(`${cellNumber}`).height = 35;
+  worksheet.getCell(`A${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "center",
+  };
+  worksheet.getCell(`A${cellNumber}`).value = "Total";
+  worksheet.getCell(`A${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`F${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`G${cellNumber}`).border = {
+    top: { style: "thin" },
+    left: { style: "thin" },
+    bottom: { style: "thin" },
+    right: { style: "thin" },
+  };
+  worksheet.getCell(`F${cellNumber}`).alignment = {
+    horizontal: "right",
+    vertical: "middle",
+  };
+  worksheet.getCell(`G${cellNumber}`).alignment = {
+    vertical: "middle",
+    horizontal: "right",
+  };
+
+  worksheet.getCell(`F${cellNumber}`).value = totalBase;
+  worksheet.getCell(`G${cellNumber}`).value = totalWithheld;
+  worksheet.getCell(`F${cellNumber}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+  worksheet.getCell(`G${cellNumber}`).numFmt = "#,##0.00;[Red]-#,##0.00";
+
+  // worksheet.getCell(`A${incomeNumber + 10}`).value = "Prepared by";
+  // worksheet.getCell(`G${incomeNumber + 10}`).value = $(
+  //   ".generate-excel select"
+  // ).val();
+
+  totalBase = 0;
+  totalWithheld = 0;
 
   await workbook.xlsx.writeBuffer().then(function (datas) {
     var blob = new Blob([datas], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
-    saveAs(blob, `${data[0]["month"]} ${data[0]["year"]} Report.xlsx`);
+    saveAs(blob, `${data[0][0]["month"]} ${data[0][0]["year"]} Report.xlsx`);
   });
 }
 
