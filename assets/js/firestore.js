@@ -583,16 +583,9 @@ async function getWhereDocs(month, year) {
       console.log(err.message);
     });
   console.log(data);
-  exportJS(data);
-  // js(data);
+  exportJS(data, month, year);
 }
-
-function js(data) {
-  console.log(data[0][0]);
-  // if(data[0][0])
-}
-
-async function exportJS(data) {
+async function exportJS(data, month, year) {
   const workbook = new ExcelJS.Workbook();
 
   const worksheet = workbook.addWorksheet("Sheet 1");
@@ -600,6 +593,13 @@ async function exportJS(data) {
   let cellNumber = 8;
   let totalBase = 0;
   let totalWithheld = 0;
+  let dataIncome = data[0].length;
+  let dataMoney = data[1].length;
+  let dataMoney1 = data[2].length;
+
+  if (dataIncome === 0 && dataMoney === 0 && dataMoney1 === 0) {
+    alert("No data on " + month + " " + year);
+  }
 
   //   worksheet.pageSetup.printArea = "A1:F20";
 
